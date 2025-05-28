@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式页面示例</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#8B5CF6',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+            }
+            .btn-secondary {
+                @apply bg-secondary hover:bg-secondary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+            }
+            .btn-accent {
+                @apply bg-accent hover:bg-accent/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark">
+    <!-- 导航栏 -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-cubes text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">交互示例</h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-700 hover:text-primary transition-colors">功能</a>
+                <a href="#calculator" class="text-gray-700 hover:text-primary transition-colors">计算器</a>
+                <a href="#chart" class="text-gray-700 hover:text-primary transition-colors">数据图表</a>
+                <a href="#form" class="text-gray-700 hover:text-primary transition-colors">表单</a>
+            </nav>
+            <button class="md:hidden text-gray-700" id="menu-toggle">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#features" class="text-gray-700 hover:text-primary py-2 transition-colors">功能</a>
+                <a href="#calculator" class="text-gray-700 hover:text-primary py-2 transition-colors">计算器</a>
+                <a href="#chart" class="text-gray-700 hover:text-primary py-2 transition-colors">数据图表</a>
+                <a href="#form" class="text-gray-700 hover:text-primary py-2 transition-colors">表单</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 英雄区 -->
+        <section class="mb-16 text-center">
+            <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-bold mb-4 bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+                交互式网页体验
+            </h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
+                探索各种交互元素和功能，体验现代网页设计的魅力
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="btn-primary">
+                    <i class="fa fa-rocket mr-2"></i>开始探索
+                </button>
+                <button class="btn-secondary">
+                    <i class="fa fa-info-circle mr-2"></i>了解更多
+                </button>
+            </div>
+        </section>
+
+        <!-- 功能卡片 -->
+        <section id="features" class="mb-16">
+            <h3 class="text-2xl font-bold mb-8 text-center">交互功能展示</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 功能卡片1 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-calculator text-primary text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">智能计算器</h4>
+                    <p class="text-gray-600 mb-4">执行基本数学运算，结果实时显示</p>
+                    <a href="#calculator" class="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                        查看详情 <i class="fa fa-arrow-right ml-1 text-sm"></i>
+                    </a>
+                </div>
+
+                <!-- 功能卡片2 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-bar-chart text-secondary text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">动态数据图表</h4>
+                    <p class="text-gray-600 mb-4">可视化数据，支持多种图表类型</p>
+                    <a href="#chart" class="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                        查看详情 <i class="fa fa-arrow-right ml-1 text-sm"></i>
+                    </a>
+                </div>
+
+                <!-- 功能卡片3 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                    <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-file-text-o text-accent text-xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">表单验证</h4>
+                    <p class="text-gray-600 mb-4">实时验证用户输入，提供友好反馈</p>
+                    <a href="#form" class="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                        查看详情 <i class="fa fa-arrow-right ml-1 text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 计算器 -->
+        <section id="calculator" class="mb-16 bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h3 class="text-2xl font-bold mb-6 text-center">智能计算器</h3>
+            <div class="max-w-md mx-auto">
+                <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                    <div class="text-right text-gray-500 text-sm mb-1">计算结果</div>
+                    <div class="text-3xl font-mono font-medium" id="calculator-result">0</div>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="7">7</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="8">8</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="9">9</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="/">÷</button>
+                    
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="4">4</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="5">5</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="6">6</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="*">×</button>
+                    
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="1">1</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="2">2</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="3">3</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="-">−</button>
+                    
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="0">0</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value=".">.</button>
+                    <button class="calc-btn bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg transition-colors" data-value="=">=</button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-lg transition-colors" data-value="+">+</button>
+                </div>
+                
+                <div class="flex justify-between mt-4">
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors" data-value="C">
+                        <i class="fa fa-refresh"></i> 清除
+                    </button>
+                    <button class="calc-btn bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors" data-value="back">
+                        <i class="fa fa-backspace"></i> 删除
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据图表 -->
+        <section id="chart" class="mb-16 bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h3 class="text-2xl font-bold mb-6 text-center">数据可视化</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold mb-4">销售趋势图</h4>
+                    <div class="h-80">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-semibold mb-4">产品类别分布</h4>
+                    <div class="h-80">
+                        <canvas id="productsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button class="btn-accent" id="update-chart">
+                    <i class="fa fa-refresh mr-2"></i>更新数据
+                </button>
+            </div>
+        </section>
+
+        <!-- 表单验证 -->
+        <section id="form" class="mb-16 bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h3 class="text-2xl font-bold mb-6 text-center">用户注册表单</h3>
+            <div class="max-w-lg mx-auto">
+                <form id="user-form" class="space-y-4">
+                    <div class="space-y-2">
+                        <label for="name" class="block text-sm font-medium text-gray-700">姓名</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="请输入您的姓名">
+                        <p class="error-message text-red-500 text-sm hidden">请输入有效的姓名</p>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label for="email" class="block text-sm font-medium text-gray-700">邮箱</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="请输入您的邮箱">
+                        <p class="error-message text-red-500 text-sm hidden">请输入有效的邮箱地址</p>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-medium text-gray-700">密码</label>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="请输入密码">
+                        <p class="error-message text-red-500 text-sm hidden">密码长度至少为8位，包含字母和数字</p>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label for="confirm-password" class="block text-sm font-medium text-gray-700">确认密码</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="请再次输入密码">
+                        <p class="error-message text-red-500 text-sm hidden">两次输入的密码不一致</p>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label for="country" class="block text-sm font-medium text-gray-700">国家/地区</label>
+                        <select id="country" name="country" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                            <option value="">请选择国家/地区</option>
+                            <option value="CN">中国</option>
+                            <option value="US">美国</option>
+                            <option value="GB">英国</option>
+                            <option value="JP">日本</option>
+                            <option value="KR">韩国</option>
+                        </select>
+                        <p class="error-message text-red-500 text-sm hidden">请选择一个国家/地区</p>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="terms" name="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded focus:ring-primary">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="terms" class="text-gray-600">我同意<a href="#" class="text-primary hover:underline">服务条款</a>和<a href="#" class="text-primary hover:underline">隐私政策</a></label>
+                        </div>
+                    </div>
+                    <p class="error-message text-red-500 text-sm hidden">请同意服务条款和隐私政策</p>
+                    
+                    <button type="submit" class="btn-primary w-full flex justify-center items-center">
+                        <i class="fa fa-user-plus mr-2"></i>注册账号
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa fa-cubes text-primary text-2xl"></i>
+                        <h2 class="text-xl font-bold">交互示例</h2>
+                    </div>
+                    <p class="text-gray-400">
+                        一个展示各种交互功能的示例网站，帮助你了解现代网页设计的交互元素和实现方式。
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">功能</a></li>
+                        <li><a href="#calculator" class="text-gray-400 hover:text-white transition-colors">计算器</a></li>
+                        <li><a href="#chart" class="text-gray-400 hover:text-white transition-colors">数据图表</a></li>
+                        <li><a href="#form" class="text-gray-400 hover:text-white transition-colors">表单</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope-o text-primary mr-2"></i>
+                            <a href="mailto:info@example.com" class="text-gray-400 hover:text-white transition-colors">info@example.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone text-primary mr-2"></i>
+                            <span class="text-gray-400">+86 123 4567 8901</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-map-marker text-primary mr-2"></i>
+                            <span class="text-gray-400">北京市朝阳区示例街道100号</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2025 交互示例. 保留所有权利.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-weibo text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-wechat text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fa fa-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
+            } else {
+                navbar.classList.remove('shadow-md', 'bg-white/95', 'backdrop-blur-sm');
+            }
+        });
+
+        // 移动端菜单
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 计算器功能
+        const calculatorResult = document.getElementById('calculator-result');
+        const calcButtons = document.querySelectorAll('.calc-btn');
+        
+        let currentValue = '0';
+        let previousValue = null;
+        let operation = null;
+        
+        calcButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.getAttribute('data-value');
+                
+                if (/[0-9.]/.test(value)) {
+                    if (currentValue === '0' && value !== '.') {
+                        currentValue = value;
+                    } else if (value === '.' && currentValue.includes('.')) {
+                        // 防止重复的小数点
+                        return;
+                    } else {
+                        currentValue += value;
+                    }
+                } else if (['+', '-', '*', '/'].includes(value)) {
+                    if (previousValue !== null) {
+                        calculate();
+                    }
+                    operation = value;
+                    previousValue = currentValue;
+                    currentValue = '0';
+                } else if (value === '=') {
+                    if (previousValue !== null && operation !== null) {
+                        calculate();
+                        previousValue = null;
+                        operation = null;
+                    }
+                } else if (value === 'C') {
+                    currentValue = '0';
+                    previousValue = null;
+                    operation = null;
+                } else if (value === 'back') {
+                    if (currentValue.length > 1) {
+                        currentValue = currentValue.slice(0, -1);
+                    } else {
+                        currentValue = '0';
+                    }
+                }
+                
+                calculatorResult.textContent = currentValue;
+            });
+        });
+        
+        function calculate() {
+            const prev = parseFloat(previousValue);
+            const current = parseFloat(currentValue);
+            let result;
+            
+            switch (operation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    if (current === 0) {
+                        result = '错误';
+                    } else {
+                        result = prev / current;
+                    }
+                    break;
+                default:
+                    return;
+            }
+            
+            currentValue = result.toString();
+        }
+
+        // 图表功能
+        const salesCtx = document.getElementById('salesChart').getContext('2d');
+        const productsCtx = document.getElementById('productsChart').getContext('2d');
+        
+        // 销售趋势图
+        const salesChart = new Chart(salesCtx, {
+            type: 'line',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                datasets: [{
+                    label: '销售额',
+                    data: [12000, 19000, 15000, 21000, 18000, 25000],
+                    borderColor: '#3B82F6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        
+        // 产品类别分布
+        const productsChart = new Chart(productsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['电子产品', '服装', '食品', '家居', '其他'],
+                datasets: [{
+                    data: [35, 25, 20, 15, 5],
+                    backgroundColor: [
+                        '#3B82F6',
+                        '#10B981',
+                        '#8B5CF6',
+                        '#F59E0B',
+                        '#EF4444'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+        
+        // 更新图表数据
+        document.getElementById('update-chart').addEventListener('click', () => {
+            // 更新销售数据
+            salesChart.data.datasets[0].data = salesChart.data.datasets[0].data.map(
+                value => Math.floor(value * (0.8 + Math.random() * 0.4))
+            );
+            salesChart.update();
+            
+            // 更新产品分布数据
+            const newProductData = [];
+            let sum = 0;
+            for (let i = 0; i < 4; i++) {
+                const value = Math.floor(Math.random() * 30) + 5;
+                newProductData.push(value);
+                sum += value;
+            }
+            newProductData.push(100 - sum); // 确保总和为100
+            productsChart.data.datasets[0].data = newProductData;
+            productsChart.update();
+        });
+
+        // 表单验证
+        const userForm = document.getElementById('user-form');
+        const formInputs = userForm.querySelectorAll('input, select');
+        
+        userForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+            
+            // 重置所有错误消息
+            userForm.querySelectorAll('.error-message').forEach(msg => {
+                msg.classList.add('hidden');
+            });
+            
+            // 验证姓名
+            const name = document.getElementById('name').value.trim();
+            if (name === '') {
+                showError('name', '请输入您的姓名');
+                isValid = false;
+            }
+            
+            // 验证邮箱
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('email', '请输入有效的邮箱地址');
+                isValid = false;
+            }
+            
+            // 验证密码
+            const password = document.getElementById('password').value;
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                showError('password', '密码长度至少为8位，包含字母和数字');
+                isValid = false;
+            }
+            
+            // 验证确认密码
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (confirmPassword !== password) {
+                showError('confirm-password', '两次输入的密码不一致');
+                isValid = false;
+            }
+            
+            // 验证国家/地区
+            const country = document.getElementById('country').value;
+            if (country === '') {
+                showError('country', '请选择一个国家/地区');
+                isValid = false;
+            }
+            
+            // 验证条款同意
+            const terms = document.getElementById('terms').checked;
+            if (!terms) {
+                userForm.querySelector('p.error-message:last-of-type').classList.remove('hidden');
+                isValid = false;
+            }
+            
+            // 如果表单有效，显示成功消息
+            if (isValid) {
+                alert('注册成功！');
+                userForm.reset();
+            }
+        });
+        
+        // 实时验证
+        formInputs.forEach(input => {
+            input.addEventListener('blur', () => {
+                validateField(input);
+            });
+        });
+        
+        function validateField(input) {
+            const id = input.id;
+            const value = input.value.trim();
+            
+            switch (id) {
+                case 'name':
+                    if (value === '') {
+                        showError(id, '请输入您的姓名');
+                    } else {
+                        hideError(id);
+                    }
+                    break;
+                    
+                case 'email':
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        showError(id, '请输入有效的邮箱地址');
+                    } else {
+                        hideError(id);
+                    }
+                    break;
+                    
+                case 'password':
+                    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                    if (!passwordRegex.test(value)) {
+                        showError(id, '密码长度至少为8位，包含字母和数字');
+                    } else {
+                        hideError(id);
+                    }
+                    break;
+                    
+                case 'confirm-password':
+                    const password = document.getElementById('password').value;
+                    if (value !== password) {
+                        showError(id, '两次输入的密码不一致');
+                    } else {
+                        hideError(id);
+                    }
+                    break;
+                    
+                case 'country':
+                    if (value === '') {
+                        showError(id, '请选择一个国家/地区');
+                    } else {
+                        hideError(id);
+                    }
+                    break;
+            }
+        }
+        
+        function showError(id, message) {
+            const errorElement = document.getElementById(id).nextElementSibling;
+            if (errorElement && errorElement.classList.contains('error-message')) {
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+        }
+        
+        function hideError(id) {
+            const errorElement = document.getElementById(id).nextElementSibling;
+            if (errorElement && errorElement.classList.contains('error-message')) {
+                errorElement.classList.add('hidden');
+            }
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是在移动设备上，点击导航链接后关闭菜单
+                    if (window.innerWidth < 768) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+    
